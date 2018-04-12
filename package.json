@@ -1,0 +1,22 @@
+{
+  "name": "scheff-wq",
+  "version": "1.0.0",
+  "description": "simple queueing takehome problem",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajscheff/scheff-wq.git"
+  },
+  "author": "Andy Scheff",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ajscheff/scheff-wq/issues"
+  },
+  "homepage": "https://github.com/ajscheff/scheff-wq#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
