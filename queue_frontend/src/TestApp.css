@@ -1,0 +1,21 @@
+.Consumer {
+  text-align: left;
+  display: block;
+  width: auto;
+  overflow: auto;
+  background-color: red;
+  padding: 10px;
+  min-height: 100px;
+}
+
+.ConsumerHeader {
+  float: left;
+  background-color: green;
+
+}
+
+.Job {
+  display: inline-block;
+  padding: 5px;
+}
+
