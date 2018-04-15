@@ -1,16 +1,24 @@
 import React, { Component } from 'react';
 import './TestApp.css'
 
+const HOST_URL = 'http://localhost:3000'
 
 class TestApp extends Component {
  
   constructor(props) {
     super(props);
-    this.state = {q:[], consumers:[], lastSubmitId:null};
+    this.state = {q:[], 
+                  consumers:[], 
+                  lastSubmitId:null, 
+                  checkResult:null};
+  }
+
+  componentDidMount() {
+    this.newConsumer();
   }
 
   makePost(url, data={}) {
-    return fetch(url, {
+    return fetch(HOST_URL + url, {
       body: JSON.stringify(data),
       method: 'POST',
       headers: {
@@ -23,9 +31,18 @@ class TestApp extends Component {
   submitMessage() {
     var msg = this.refs.messageInput.value;
     this.refs.messageInput.value = "";
-    console.log(msg);
-    this.makePost("http://localhost:3000/submit", {msg:msg})
-      .then(data => this.setState({lastSubmitId:data.id}));
+    this.makePost("/submit", {msg:msg})
+      .then(data => {
+        this.refs.checkInput.value = data.id;
+        this.setState({lastSubmitId:data.id});
+      });
+  }
+
+  checkID() {
+    var id = this.refs.checkInput.value;
+    fetch(HOST_URL + '/check/' + id)
+      .then(response => response.json())
+      .then(data => this.setState({checkResult:data.status}))
   }
 
   newConsumer() {
@@ -36,7 +53,7 @@ class TestApp extends Component {
 
   consumerPull(index) {
     var newConsumers = this.state.consumers;
-    this.makePost("http://localhost:3000/pull")
+    this.makePost("/pull")
       .then(data => {
         for (var job in data) {
           newConsumers[index].jobs.push(data[job]);
@@ -62,11 +79,10 @@ class TestApp extends Component {
 
   consumerCompleteJob(index, jobIndex) {
     var jobID = this.state.consumers[index].jobs[jobIndex].id;
-    this.makePost("http://localhost:3000/complete", {id:jobID})
+    this.makePost("/complete", {id:jobID})
       .then(data => {
         this.setState({lastConsumerResponse:data.status});
-
-        if (data.status === 'ok') {
+        if (data.status === 'completed') {
           this.consumerForgetJob(index, jobIndex);
         }
       });
@@ -77,11 +93,26 @@ class TestApp extends Component {
       <div className="TestApp">
         <div className="Producer">
           <h1>Producer:</h1>
-          Message:
-          <input type="text" ref="messageInput" />
-          <button className="SubmitButton" onClick={() => this.submitMessage()} >Submit Message</button>
-          <br />
-          Last Created Message ID: {this.state.lastSubmitId}
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  Message:
+                  <input type="text" ref="messageInput" />
+                  <button className="SubmitButton" onClick={() => this.submitMessage()} >Submit Message</button>
+                  <br />
+                  Last Created Message ID: {this.state.lastSubmitId}
+                </td>
+                <td>
+                  ID to check:
+                  <input type="text" ref="checkInput" />
+                  <button className="CheckButton" onClick={() => this.checkID()} >Check</button>
+                  <br />
+                  Check Result: {this.state.checkResult}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div className="Consumers">
           <h1>Consumers:</h1>

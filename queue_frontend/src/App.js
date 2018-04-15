@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import AdminTool from './AdminTool.js';
 import TestApp from './TestApp.js'
-import './App.css';
 
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 

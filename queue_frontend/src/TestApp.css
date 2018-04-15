@@ -1,21 +1,33 @@
+.TestApp {
+  padding: 5px;
+}
+
 .Consumer {
   text-align: left;
   display: block;
   width: auto;
   overflow: auto;
-  background-color: red;
   padding: 10px;
+  margin: 5px;
   min-height: 100px;
+  border-style: solid;
+  border-width: 1px;
 }
 
 .ConsumerHeader {
   float: left;
-  background-color: green;
-
 }
 
 .Job {
   display: inline-block;
   padding: 5px;
+}
+
+table {
+  margin: 0;
+}
+
+td {
+  padding: 10px;
 }
 
