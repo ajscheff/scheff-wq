@@ -45,7 +45,7 @@ class AdminTool extends Component {
                     <td>{item.timesSent}</td>
                   </tr>
                 )
-              }.bind(this))
+              })
             }
           </tbody>
         </table>
