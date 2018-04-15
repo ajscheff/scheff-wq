@@ -14,6 +14,7 @@ class TestApp extends Component {
   }
 
   componentDidMount() {
+    // initialize with a consumer
     this.newConsumer();
   }
 
@@ -25,7 +26,7 @@ class TestApp extends Component {
         'content-type': 'application/json'
       },
     })
-    .then(response => response.json()) // parses response to JSON
+    .then(response => response.json())
   }
 
   submitMessage() {
@@ -83,6 +84,11 @@ class TestApp extends Component {
       .then(data => {
         this.setState({lastConsumerResponse:data.status});
         if (data.status === 'completed') {
+
+          // Only forget the job if it's successfully completed.
+          // this was a UX choice to make it obvious that complete
+          // is working correctly and the illustrate the challenges
+          // of having multiple consumers.
           this.consumerForgetJob(index, jobIndex);
         }
       });
