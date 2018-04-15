@@ -16,7 +16,13 @@ The client app allows you to play with all the functions of WonderQ.
 * Consumers are fairly dumb and dont do any job de-duplication. They can hold the same job multiple times. If the Complete Job button doesn't work, it means this job has already been completed (either by this consumer or another consumer). Press Forget Job to get rid of it.
 
 
-I used `create-react-app` to quickly get this client app up and running. The documentation for `create-react-app` is below.
+
+I used `create-react-app` to quickly get these client apps up and running. The documentation for `create-react-app` is below.
+
+
+
+
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 

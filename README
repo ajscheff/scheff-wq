@@ -1,1 +1,26 @@
-See README.md inside queue_server/ and queue_frontend/ for installation, running, and usage instructions.
+See README.md inside queue_server/ and queue_frontend/ for installation, running, and usage instructions. queue_server/README.md also has documentation for the server API.
+
+Notes on scaling the system:
+
+There are a number of ways the system could fail at scale and for each, there's a strategy that I would take to make the system more robust at scale. I'll outline a few.
+
+
+Scenario 1: A high volume of submit requests causes all endpoints to slow down
+
+Before extending to multiple machines I would try to optimize the submitting process. Submitting requires a database action which would be the bottleneck of the submit request. Since the processing of the jobs is already asynchronous, I would try performing the database writes asynchronously and maybe even in batches.
+
+
+Scenario 2: A high volume of pull requests causes slow down
+
+This is harder to optimize since each pull request must check the database again for new jobs and also modifies existing jobs. You can't batch them because one depends on the one before it. I would consider making my consumers less greedy or rate-limiting the /pull endpoint. If the queue is frequently empty when pulled, you could avoid querying the database by keeping an in-memory queue_empty bit. Finally, you could look into optimizing the database itself by adding indices or changing the configuration. If all of this isn't enough, I would consider a multiple machine implementation.
+
+
+Scenario 3: The above optimizations aren't enough and I need to have multiple servers
+
+This adds a lot of complexity to the system and introduces a number of new tradeoffs. This is exemplified by the Amazon SQS implementation in which there are two kinds of queues to choose from: A Standard Queue and a FIFO Queue. The FIFO Queue, which has more strict guarantees on ordering, is only available in certain AWS regions and has limitations on throughput.
+
+In this multi-server scenario, producers submit jobs to one of many queue servers, consumers pull jobs from one of many queue servers, and consumers send completed pings to one out of many servers. The servers must periodically share the jobs that they've received, what they've assigned to consumers and when, and what jobs they've been notified are complete. 
+
+The optimization of such a system is a complex problem involving caching, data locality, and fault tolerance while balancing correctness requirements, cost and maintenance overhead. Each consideration can be discussed at length, but the guiding principle I would use to scale the system is to use as much out-of-the-box technology as I could. For example, I would use a distributed database to allow multiple reads and writes at the same time while keeping a single consistent data model. If that was too slow, I would try to improve its sharding and configuration. Only after out-of-the-box technologies fail me, I would consider writing some custom caching.
+
+One possible challenge of a distributed system would be ID collisions. You can either have a central server doll out unique IDs, or you could have each server generate unique IDs. The correct implementation would depend on the scheme you're using to share data. A distributed database may also have this functionality built in.
