@@ -1,6 +1,11 @@
 # WonderQ API
 
+## Running the server
+run `node wq.js`
+the server will start at http://localhost:3000/
 
+## Configuring the queue
+To change the amount of time the queue waits before re-assigning an uncomplete job, change `RETRY_INTERVAL` at the top of wq.js
 
 ## Producer Endpoints
 

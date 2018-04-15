@@ -124,9 +124,9 @@ class TestApp extends Component {
                   <div className="ConsumerHeader">
                     Current jobs:
                     <br/>
-                    <button className="PullButton" onClick={() => this.consumerPull(i)} >Pull for more jobs</button>
+                    <button className="PullButton" onClick={() => this.consumerPull(i)} >Pull for jobs</button>
                     <br/>
-                    <button className="DeleteButton" onClick={() => this.consumerDelete(i)} >Delete this consumer</button>
+                    <button className="DeleteButton" onClick={() => this.consumerDelete(i)} >Delete</button>
                   </div>
                   {
                     this.state.consumers[i].jobs.map(function(job, j){
@@ -136,9 +136,9 @@ class TestApp extends Component {
                           <br/>
                           Msg: {job.msg}
                           <br/>
-                          <button className="CompleteButton" onClick={() => this.consumerCompleteJob(i, j)} >Complete this Job</button>
+                          <button className="CompleteButton" onClick={() => this.consumerCompleteJob(i, j)} >Complete Job</button>
                           <br/>
-                          <button className="ForgetButton" onClick={() => this.consumerForgetJob(i, j)} >Forget this Job</button>
+                          <button className="ForgetButton" onClick={() => this.consumerForgetJob(i, j)} >Forget Job</button>
                         </div>
                       )
                     }.bind(this))

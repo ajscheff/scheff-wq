@@ -1,10 +1,22 @@
 ## Running the client
 
-To run the client, type, use  `yarn start`.
+Run `npm install` to install react dependencies
+To run the client, type, use  `yarn start`
+
+http://localhost:3001/ is the admin page
+
+The admin page can also be accessed at /admin. The admin page is pretty self explanatory, it simply shows a clean view of all the jobs currently in the queue with some information that may be helpful for debugging issues like timestamps and simple statistics.
 
 
+http://localhost:3001/app is the test client app
+
+The client app allows you to play with all the functions of WonderQ. 
+* Use the Producer section to enqueue messages and check the status of enqueued messages. 
+* Use the consumer section to pull jobs from WonderQ. With each job, decide to Complete it or Forget it. Then, make a new consumer and pull again to see what happens. Also make sure to test the job retry functionality by pulling multiple times quickly. The threshold for re-sending an uncompleted job to a new consumer is 5 seconds by default, but can be changed in ../queue_server/wq.js
+* Consumers are fairly dumb and dont do any job de-duplication. They can hold the same job multiple times. If the Complete Job button doesn't work, it means this job has already been completed (either by this consumer or another consumer). Press Forget Job to get rid of it.
 
 
+I used `create-react-app` to quickly get this client app up and running. The documentation for `create-react-app` is below.
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
